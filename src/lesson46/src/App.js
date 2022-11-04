@@ -1,8 +1,6 @@
 import React from 'react';
 
-const delay = (ms) => {
-	return new Promise((r) => setTimeout(() => r(), ms));
-};
+
 
 function App() {
 
