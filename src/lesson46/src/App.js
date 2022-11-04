@@ -1,34 +1,50 @@
 import React from 'react';
-import { useForm, FormProvider } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from '@hookform/resolvers/yup';
-import PersonalInfoForm from './forms/PersonalInfoForm';
-import { Button } from '@mui/material';
 
-const schema = yup.object({
-  firstName: yup.string().min(5, 'Слишком короткое имя').required('Это обязательное поле!'),
-  lastName: yup.string().required('Это обязательное поле!'),
-  email: yup.string().email('Неверная почта').required('Укажите почту'),
-});
-
+const delay = (ms) => {
+	return new Promise((r) => setTimeout(() => r(), ms));
+};
 
 function App() {
 
-  const methods = useForm({
-    resolver: yupResolver(schema),
-  });
+  const [users, setUsers] = React.useState([]);
 
-  const onSubmit = (values) => {
-    console.log(values);
+
+
+  //Домашнее задание
+
+  // const url = 'https://6363989337f2167d6f7d80a5.mockapi.io/users';
+
+  // async function fetchAsync() {
+  //   try {
+  //     await delay(2000);
+  //     const response = await fetch(url);
+  //     const result = await response.json();
+  //     setUsers(users, result);
+  //   } catch(e) {
+  //     console.log(e);
+  //   }
+  // }
+
+
+
+
+  const getUsers = () => {
+    fetch('https://6363989337f2167d6f7d80a5.mockapi.io/users').then((res) => {
+      res.json().then((result) => {
+        setUsers(result);
+      })
+    })
   }
 
-
   return (
-    <div className="App">
-      <FormProvider {...methods}>
-        <PersonalInfoForm  />
-      </FormProvider>
-      <Button onClick={methods.handleSubmit(onSubmit)} variant='contained' color='primary'>Очистить</Button>
+    <div>
+        <ul>
+          {users?.map((obj) => (
+            <li key={obj.id}>{obj.name}</li>
+          ))}
+        </ul>
+      <button onClick={getUsers}>Получить список пользователя</button>
+      {/* <button onClick={fetchAsync}>Получить список пользователя</button> Кнопка для ДЗ */}
     </div>
   );
 }
