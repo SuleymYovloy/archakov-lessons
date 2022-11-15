@@ -15,12 +15,6 @@ function App() {
   
   const state = useSelector(state => state);
   const dispatch = useDispatch();
-  // const [tasks, setTasks] = React.useState(state.tasks);
-
-  // store.subscribe(() => {
-  //   const newState = store.getState();
-  //   setTasks(newState.tasks);
-  // });
 
   const addTask = (text, checked) => {
     dispatch({

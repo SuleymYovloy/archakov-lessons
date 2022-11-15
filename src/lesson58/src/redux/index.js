@@ -1,4 +1,5 @@
-import { legacy_createStore as createStore } from 'redux'; //Подключил createStore вместо configureStore.
+import { legacy_createStore as createStore } from 'redux'; 
+
 
 function reducer(state, action) {
   
