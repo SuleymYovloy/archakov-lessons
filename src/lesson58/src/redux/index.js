@@ -1,6 +1,7 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { legacy_createStore as createStore } from 'redux';
 
 function reducer(state, action) {
+  
   if (action.type === 'ADD_TASK') {
     return {
       ...state,
@@ -10,8 +11,8 @@ function reducer(state, action) {
           id: state.tasks[state.tasks.length - 1].id + 1,
           text: action.payload.text,
           completed: action.payload.checked
-        }
-      ]
+        },
+      ],
     };
   }
 
@@ -62,30 +63,16 @@ function reducer(state, action) {
   return state;
 }
 
-const store = configureStore({reducer}, {
-  filterBy: 'all',
 
+const store = createStore(reducer, {
+  
+  filterBy: 'all',
   tasks: [
     {
       id: 1,
       text: 'Первая задача',
       completed: false,
     },
-    {
-      id: 2,
-      text: 'Проверил как работает отрисовка',
-      completed: true
-    },
-    {
-      id: 3,
-      text: 'Проверил как работает отрисовка',
-      completed: false
-    },
-    {
-      id: 4,
-      text: 'Проверил как работает отрисовка',
-      completed: true
-    }
   ],
 });
 

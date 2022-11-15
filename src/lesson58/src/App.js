@@ -1,22 +1,28 @@
+/* eslint-disable array-callback-return */
 import React from 'react';
 import { Paper, Divider, Button, List, Tabs, Tab } from '@mui/material';
 import { AddField } from './components/AddField';
 import { Item } from './components/Item';
-import { useDispatch, useSelector } from 'react-redux';
-
+import {useSelector, useDispatch} from 'react-redux'
 
 const filterIndex = {
-  all: 0,
-  active: 1,
-  completed: 2,
+  'all': 0,
+  'active': 1,
+  'completed': 2,
 }
 
-
 function App() {
+  
   const dispatch = useDispatch();
   const state = useSelector(state => state);
+  // const [tasks, setTasks] = React.useState(state.tasks);
 
-  function addTask(text, checked) {
+  // store.subscribe(() => {
+  //   const newState = store.getState();
+  //   setTasks(newState.tasks);
+  // });
+
+  const addTask = (text, checked) => {
     dispatch({
       type: 'ADD_TASK',
       payload: {
@@ -73,7 +79,7 @@ function App() {
         </Paper>
         <AddField onAdd={addTask}/>
         <Divider />
-        <Tabs onChange={setFilter} value={filterIndex[state?.filterBy]}>
+        <Tabs onChange={setFilter} value={filterIndex[state.filterBy]}>
           <Tab label="Все" />
           <Tab label="Активные" />
           <Tab label="Завершённые" />
@@ -81,23 +87,23 @@ function App() {
         <Divider />
         <List>
           {
-            state?.tasks?.filter((obj) => {
+            state.tasks.filter(obj => {
               if (state.filterBy === 'all') {
                 return true;
               }
               if (state.filterBy === 'completed') {
-                return obj.completed;
+                return obj.completed
               }
               if (state.filterBy === 'active') {
-                return !obj.completed;
+                return !obj.completed
               }
             }).map(obj => (<Item key={obj.id} id text={obj.text} completed={obj.completed} onClickDelete={() => deleteTask(obj.id)} onClickChecked={() => toggleComplete(obj.id)}/> ))
           }
         </List>
         <Divider />
         <div className="check-buttons">
-          <Button disabled={!state?.length === 0} onClick={completeAll}>Отметить всё</Button>
-          <Button disabled={!state?.length === 0} onClick={clearAll}>Очистить</Button>
+          <Button disabled={!state.length === 0} onClick={completeAll}>Отметить всё</Button>
+          <Button disabled={!state.length === 0} onClick={clearAll}>Очистить</Button>
         </div>
       </Paper>
     </div>
