@@ -13,8 +13,8 @@ const filterIndex = {
 
 function App() {
   
-  const dispatch = useDispatch();
   const state = useSelector(state => state);
+  const dispatch = useDispatch();
   // const [tasks, setTasks] = React.useState(state.tasks);
 
   // store.subscribe(() => {
