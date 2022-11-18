@@ -1,6 +1,7 @@
 import React from 'react'
 import { Tabs, Tab } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
+import {setFilter} from '../redux/actions/filter';
 
 const filterIndex = {
   all: 0,
@@ -10,18 +11,15 @@ const filterIndex = {
 
 export const Filter = () => { 
   const dispatch = useDispatch();
-  const filterBy = useSelector(state => state.filterBy); // Достает из стейта только filterBy
+  const filterBy = useSelector(state => state.filter.filterBy); // Достает из стейта только filterBy
 
-  const setFilter = (_, newIndex) => {
+  const handleChangeFilter = (_, newIndex) => {
     const status = Object.keys(filterIndex)[newIndex];
-    dispatch({
-      type: 'SET_FILTER',
-      payload: status,
-    });
+    dispatch(setFilter(status));
   };
 
   return (
-    <Tabs onChange={setFilter} value={filterIndex[filterBy]}>
+    <Tabs onChange={handleChangeFilter} value={filterIndex[filterBy]}>
       <Tab label="Все" />
       <Tab label="Активные" />
       <Tab label="Завершённые" />

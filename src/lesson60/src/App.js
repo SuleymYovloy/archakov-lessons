@@ -5,49 +5,34 @@ import { AddField } from './components/AddField';
 import { Item } from './components/Item';
 import {useSelector, useDispatch} from 'react-redux';
 import {Filter} from './components/Filter';
+import {addTask, removeTask, toggleComplete, completeAll, clearAll} from './redux/actions/tasks'
 
 function App() {
   
   const state = useSelector(state => state);
   const dispatch = useDispatch();
 
-  const addTask = (text, checked) => {
-    dispatch({
-      type: 'ADD_TASK',
-      payload: {
-        text,
-        checked
-      },
-    });
+  const handleClickAdd = (text, checked) => {
+    dispatch(addTask(text, checked));
   }
 
-  const deleteTask = (id) => {
+  const handleDeleteTask = (id) => {
     if (window.confirm('Удалить задачу?')) {
-      dispatch({
-        type: 'DELETE_TASK',
-        payload: id,
-      });
+      dispatch(removeTask(id));
     }
   };
 
-  const toggleComplete = (id) => {
-    dispatch({
-      type: 'TOGGLE_COMPLETE',
-      payload: id,
-    });
+  const handleToggleComplete = (id) => {
+    dispatch(toggleComplete(id));
   }
 
-  const completeAll = () => {
-    dispatch({
-      type: 'COMPLETE_ALL',
-    });
+  const handleCompleteAll = () => {
+    dispatch(completeAll());
   }
   
-  const clearAll = () => {
+  const handleClearAll = () => {
     if (window.confirm('Очистить все?')) {
-      dispatch({
-        type: 'CLEAR',
-      });
+      dispatch(clearAll());
     }
     
   }
@@ -58,29 +43,29 @@ function App() {
         <Paper className="header" elevation={0}>
           <h4>Список задач</h4>
         </Paper>
-        <AddField onAdd={addTask}/>
+        <AddField onAdd={handleClickAdd}/>
         <Divider />
         <Filter/> {/*Компонент */}
         <Divider />
         <List>
           {
             state.tasks.filter(obj => {
-              if (state.filterBy === 'all') {
+              if (state.filter.filterBy === 'all') {
                 return true;
               }
-              if (state.filterBy === 'completed') {
+              if (state.filter.filterBy === 'completed') {
                 return obj.completed
               }
-              if (state.filterBy === 'active') {
+              if (state.filter.filterBy === 'active') {
                 return !obj.completed
               }
-            }).map(obj => (<Item key={obj.id} id text={obj.text} completed={obj.completed} onClickDelete={() => deleteTask(obj.id)} onClickChecked={() => toggleComplete(obj.id)}/> ))
+            }).map(obj => (<Item key={obj.id} id text={obj.text} completed={obj.completed} onClickDelete={() => handleDeleteTask(obj.id)} onClickChecked={() => handleToggleComplete(obj.id)}/> ))
           }
         </List>
         <Divider />
         <div className="check-buttons">
-          <Button disabled={!state.length === 0} onClick={completeAll}>Отметить всё</Button>
-          <Button disabled={!state.length === 0} onClick={clearAll}>Очистить</Button>
+          <Button disabled={!state.tasks.length} onClick={handleCompleteAll}>Отметить всё</Button>
+          <Button disabled={!state.tasks.length} onClick={handleClearAll}>Очистить</Button>
         </div>
       </Paper>
     </div>
